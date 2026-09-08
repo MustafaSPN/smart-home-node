@@ -13,15 +13,43 @@ temperature and humidity. A SwiftUI iOS app is the control surface, and Firebase
 (Realtime Database, Auth, Cloud Functions, Cloud Scheduler, Cloud Messaging) is
 the glue between them.
 
-The interesting constraint is that the device is on the *inside* of the thing it
-monitors. When the power goes out the ESP32 goes out with it, so outage
-detection cannot be a message from the device — it has to be the *absence* of
-one, observed from the cloud. That heartbeat-and-timeout design is the core of
-the system.
-
 The repository contains three codebases: the ESP32-S3 firmware (`esp/`), the
 first-generation ESP32 firmware kept for reference (`esp32-legacy/`), the
 Firebase Cloud Functions (`functions/`), and the iOS app (`HomeNode/`).
+
+## Why I Built This
+
+Home Node started with a problem I encountered while traveling abroad.
+
+During the trip, a circuit breaker tripped at home. I had no way of knowing
+that the apartment had lost power, and when I returned, I discovered that the
+refrigerator had been without power long enough for everything inside to
+spoil.
+
+I wanted to make sure I would know if something similar happened again. The
+interesting constraint was that the device monitoring the house would lose
+power at the same time as everything else.
+
+Instead of trying to report the outage itself, I designed the system around a
+heartbeat. An ESP32 periodically reports that the house is online. If those
+heartbeats stop arriving for long enough, the backend infers a possible power
+outage and sends a notification to my phone. When the device comes back
+online, the system records the recovery and outage duration.
+
+Once I had a remotely connected device running at home, I started using it to
+solve a few other problems I had while away.
+
+I wanted to be able to turn on my desktop PC remotely, so I added Wake-on-LAN
+control through the ESP32.
+
+I also wanted to turn on the air conditioner before arriving home. Since the
+AC is controlled by an infrared remote rather than a network interface, I
+added an IR transmitter to the ESP32 and implemented remote temperature,
+mode, fan-speed, and power control from the iOS app.
+
+What began as a way to avoid another unnoticed power outage gradually became
+a small home-control system connecting embedded hardware, cloud services,
+networking, and a native iOS application.
 
 ## Features
 
@@ -453,10 +481,7 @@ Known and deliberate, listed honestly:
 
 ## Background
 
-This was built as a personal smart-home project and runs in a real apartment. It
-started with a specific annoyance — power cuts happening while nobody was home,
-with no way to know until returning — and grew into a general bridge between the
-flat and a phone: outage history, remote PC wake, and air-conditioner control
-from the same app. Feature choices were driven by what was actually needed at
-home rather than by what would demo well, which is also why the limitations
-above were accepted rather than engineered away.
+This is a personal smart-home project and it runs in a real apartment. Feature
+choices were driven by what was actually needed at home rather than by what
+would demo well, which is also why the limitations above were accepted rather
+than engineered away.
