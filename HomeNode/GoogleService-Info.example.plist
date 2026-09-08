@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  EXAMPLE ONLY — NOT A WORKING CONFIGURATION.
+  Download your own GoogleService-Info.plist from the Firebase console
+  (Project settings -> Your apps -> iOS app) and save it next to this file
+  as HomeNode/GoogleService-Info.plist. That filename is gitignored.
+
+  Make sure the DATABASE_URL key is present; the app resolves the Realtime
+  Database from it via Database.database().
+-->
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>YOUR_FIREBASE_WEB_API_KEY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>YOUR_SENDER_ID</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.HomeNode</string>
+	<key>PROJECT_ID</key>
+	<string>YOUR_FIREBASE_PROJECT_ID</string>
+	<key>DATABASE_URL</key>
+	<string>https://YOUR_PROJECT-default-rtdb.europe-west1.firebasedatabase.app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>YOUR_PROJECT.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:000000000000:ios:0000000000000000000000</string>
+</dict>
+</plist>
