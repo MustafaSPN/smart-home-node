@@ -71,45 +71,13 @@ networking, and a native iOS application.
 
 ## System Architecture
 
-```mermaid
-flowchart LR
-    subgraph Phone["iOS App (SwiftUI)"]
-        UI["Status · History<br/>Wake PC · Climate"]
-    end
-
-    subgraph Cloud["Firebase / Google Cloud (europe-west1)"]
-        AUTH["Firebase Auth<br/>email + password"]
-        RTDB[("Realtime Database<br/>users/{uid}/…")]
-        ESPPING["Cloud Function<br/>espPing (HTTP)<br/>verifyIdToken()"]
-        CHECK["Cloud Function<br/>checkPower (scheduled)"]
-        SCHED["Cloud Scheduler<br/>every 2 minutes"]
-        FCM["Cloud Messaging"]
-    end
-
-    subgraph Home["Home network"]
-        ESP["ESP32-S3<br/>firmware"]
-        PC["Desktop PC"]
-        AC["Air conditioner"]
-        DHT["DHT11 sensor"]
-    end
-
-    UI <-->|"sign in"| AUTH
-    UI <-->|"listen + write"| RTDB
-    ESP -->|"sign in"| AUTH
-    ESP -->|"HTTPS POST every 5 min<br/>Authorization: Bearer &lt;ID token&gt;"| ESPPING
-    ESPPING --> RTDB
-    SCHED --> CHECK
-    CHECK --> RTDB
-    CHECK --> FCM
-    ESPPING --> FCM
-    FCM -->|"APNs push"| Phone
-    RTDB -.->|"stream: command/pc_on"| ESP
-    RTDB -.->|"stream: climate/state"| ESP
-    ESP -->|"UDP magic packet<br/>broadcast :9 and :7"| PC
-    ESP -->|"38 kHz IR"| AC
-    DHT --> ESP
-    ESP -->|"room_temp / room_hum"| RTDB
-```
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/system-architecture-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="docs/diagrams/system-architecture-light.png">
+    <img src="docs/diagrams/system-architecture-light.png" width="820" alt="Smart home node architecture: a SwiftUI iOS app and an ESP32-S3 firmware node both authenticate with Firebase Auth and exchange state through Realtime Database; a heartbeat Cloud Function verifies the device ID token, a scheduled function checks power state, and Cloud Messaging delivers APNs push notifications, while the ESP32 wakes a PC over UDP magic packets, drives an air conditioner over 38 kHz IR and reports DHT11 temperature and humidity.">
+  </picture>
+</div>
 
 ### Realtime Database layout
 
