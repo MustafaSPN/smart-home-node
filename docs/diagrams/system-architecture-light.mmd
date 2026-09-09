@@ -1,4 +1,4 @@
-%%{init: {'theme':'default','fontFamily':'ui-sans-serif, -apple-system, Segoe UI, sans-serif'}}%%
+%%{init: {'theme':'base','themeVariables':{'lineColor':'#57606A','textColor':'#1F2328','edgeLabelBackground':'#FFFFFF','clusterBkg':'#FFFFFF','clusterBorder':'#D0D7DE','fontFamily':'ui-sans-serif, -apple-system, Segoe UI, sans-serif','fontSize':'15px'}}}%%
 flowchart LR
     subgraph Phone["iOS App (SwiftUI)"]
         UI["Status · History<br/>Wake PC · Climate"]
@@ -29,10 +29,22 @@ flowchart LR
     CHECK --> RTDB
     CHECK --> FCM
     ESPPING --> FCM
-    FCM -->|"APNs push"| Phone
+    FCM -->|"APNs push"| UI
     RTDB -.->|"stream: command/pc_on"| ESP
     RTDB -.->|"stream: climate/state"| ESP
     ESP -->|"UDP magic packet<br/>broadcast :9 and :7"| PC
     ESP -->|"38 kHz IR"| AC
     DHT --> ESP
     ESP -->|"room_temp / room_hum"| RTDB
+
+    classDef app   fill:#EEF2FF,stroke:#6366F1,stroke-width:2px,color:#1E1B4B
+    classDef cloud fill:#FFF7ED,stroke:#F59E0B,stroke-width:2px,color:#451A03
+    classDef home  fill:#ECFDF5,stroke:#10B981,stroke-width:2px,color:#022C22
+
+    class UI app
+    class AUTH,RTDB,ESPPING,CHECK,SCHED,FCM cloud
+    class ESP,PC,AC,DHT home
+
+    style Phone fill:#F8FAFF,stroke:#C7D2FE,stroke-width:1.5px,color:#3730A3
+    style Cloud fill:#FFFDF7,stroke:#FDE3B0,stroke-width:1.5px,color:#92400E
+    style Home  fill:#F7FEFB,stroke:#A7F3D0,stroke-width:1.5px,color:#065F46
